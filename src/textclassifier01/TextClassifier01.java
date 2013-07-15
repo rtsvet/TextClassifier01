@@ -47,24 +47,40 @@ public class TextClassifier01 {
 
         ///////////
 
-        Instance instance = new Instance(10);
-        instance.setDataset(data);
-        // instance.setValue(testset.attribute(0),testset.attribute(0).addStringValue(obj.toString()));
-        System.out.println("==>." + data.attribute(0));
-        instance.setValue(data.attribute(0), data.attribute(0).addStringValue("test1"));
-        instance.setDataset(data);
-
-        // Add class value to instance.
-        instance.setClassValue(1.0);
-
-        // Add instance to training data.
-        data.add(instance);
 
         // Use filter.
-        filter.input(instance);
+        filter.setInputFormat(data);
+        for (int i = 0; i < 10; i++) {
+            createInst(i % 2, data);            
+        }
+        System.out.println(data);
+        
         Instances filteredData = Filter.useFilter(data, filter);
+        System.out.println(filteredData);
 
         // Rebuild classifier.
         classifier.buildClassifier(filteredData);
+
+    }
+
+    private static Instance createInst(int testNr, Instances data) {
+        Instance inst = new Instance(3);
+        //instance.setDataset(data);
+        // instance.setValue(testset.attribute(0),testset.attribute(0).addStringValue(obj.toString()));
+        //System.out.println("==>." + data.attribute(0));
+        inst.setDataset(data);
+        if (testNr == 0) {
+            inst.setValue(data.attribute(0), data.attribute(0).addStringValue("test1"));
+            // Add class value to instance.
+            inst.setClassValue(1.0);
+        } else {
+            inst.setValue(data.attribute(1), data.attribute(1).addStringValue("test2"));
+            // Add class value to instance.
+            inst.setClassValue(0.0);
+        }
+
+        // Add instance to training data.
+        data.add(inst);
+        return inst;
     }
 }
