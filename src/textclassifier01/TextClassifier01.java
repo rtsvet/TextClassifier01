@@ -9,6 +9,7 @@ import weka.classifiers.Evaluation;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
+import weka.core.Debug;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -29,7 +30,7 @@ public class TextClassifier01 {
         System.out.println("Running");
 
         final StringToWordVector filter = new StringToWordVector();
-        final Classifier classifier = new J48();
+        final Classifier classifier = new SMO();
 
         // Create numeric attributes.
         final String[] keywords = {"test1", "test2"};
@@ -62,10 +63,10 @@ public class TextClassifier01 {
 
         final Instances testData = new Instances("Test Data", attributes, 100);
         testData.setClassIndex(testData.numAttributes() - 1);
-        createInst(0, testData);
-        createInst(1, testData);
-        createInst(0, testData);
-        createInst(1, testData);
+        for (int i = 0; i < 100; i++) {
+            createInst(i % 2, testData);
+        }
+
         System.out.println(testData);
         //System.out.println("res=" + classifier.classifyInstance(testInst));
         //System.out.println("res=" + classifier.classifyInstance(createInst(1, testData)));
@@ -89,13 +90,13 @@ public class TextClassifier01 {
         //System.out.println("==>." + data.attribute(0));
         inst.setDataset(data);
         if (testNr == 0) {
-            inst.setValue(data.attribute(0), 1);
+            inst.setValue(data.attribute(0), Math.random());
             inst.setValue(data.attribute(1), 0);
             // Add class value to instance.
             inst.setClassValue(1.0);
         } else {
-            inst.setValue(data.attribute(1), 2);
-            //inst.setValue(data.attribute(0), 0);
+            inst.setValue(data.attribute(1), 3 * Math.random());
+            inst.setValue(data.attribute(0), 0);
             // Add class value to instance.
             inst.setClassValue(0.0);
         }
