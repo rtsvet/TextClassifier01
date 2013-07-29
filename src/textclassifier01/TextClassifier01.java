@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package textclassifier01;
 
 import weka.classifiers.Classifier;
@@ -13,6 +9,7 @@ import weka.core.Debug;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.SerializationHelper;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
@@ -61,6 +58,14 @@ public class TextClassifier01 {
         // train classifier.
         classifier.buildClassifier(filteredData);
 
+        /*
+        // Serialize Classifier
+        // serialize model
+        SerializationHelper.write("smo.model", classifier);
+        // deserialize model
+        Classifier cls = (Classifier) weka.core.SerializationHelper.read("smo.model");
+        */
+        
         final Instances testData = new Instances("Test Data", attributes, 100);
         testData.setClassIndex(testData.numAttributes() - 1);
         for (int i = 0; i < 100; i++) {
